@@ -1,0 +1,327 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	margin:0px;
+	font-family:"Helvetica";
+}
+
+header {
+	background-color:#3F5666;
+	padding:10px;
+	margin-bottom:50px;
+}
+
+#headercontainer {
+	width:900px;
+	margin:auto;
+	margin-bottom:-40px;
+	text-align:right;
+}
+
+header ul {
+	list-style:none;
+	margin-top:-60px;
+}
+
+header li {
+	float:left;
+	margin-right:20px;
+	color:#FFFFFF;
+}
+
+#content {
+	width:900px;
+	margin:auto;
+	min-height:500px;
+}
+
+footer {
+	background:#333333;
+	padding:10px;
+	text-align:center;
+	color:#FFFFFF;
+	font-size:12px;
+	margin-top:40px;
+}
+
+h1 {
+	color:#333333;
+	font-size:24px;
+	font-weight:100;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+h2 {
+	color:#333333;
+	font-size:20px;
+	font-weight:100;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+
+p {
+	font-size:14px;
+	font-weight:lighter;
+	line-height:26px;
+}
+
+.clear {
+	clear:both;	
+}
+
+/*log in*/
+
+
+.error {
+	color:#C72628;	
+}
+
+.login {
+	float:right;
+	width:40%;
+}
+
+.register {
+	float:left;
+	width:40%;
+}
+
+form {
+	font-size:16px;
+}
+
+input[type="text"], input[type="password"] ,input[type="number"]  {
+	padding:5px;
+	min-height:35px;
+	display:block;
+	margin:0;
+	margin-bottom:20px;
+	border:#292929 thin solid;
+	width:100%;
+	font-size:16px;
+}
+
+input[type="submit"] {
+	color:#333333;
+	display:block;
+	padding:20px 10px 20px 10px;
+	margin-bottom:20px;
+	margin-top:20px;
+	border:none;
+	float:right;
+	font-size:16px;
+}
+
+select {
+	padding:5px;
+	height:45px;
+	display:block;
+	margin:0px;
+	margin-bottom:20px;
+	border:none;
+	width:100%;
+	background:#e0e0e0;
+	border-collapse: separate;
+	-webkit-appearance: none;
+	box-sizing:border-box;
+	font-size:16px;
+}
+
+#informationUser {
+	width: 23%;
+	text-align: center;
+	float: left;
+}
+
+#informationUser img {
+	margin:0px;
+	margin-top:10px;
+}
+
+.btn {
+	background:#808080;
+	color:#e0e0e0;
+	padding:10px 5px 10px 5px;
+	border-radius:5px;
+}
+
+.whitebtn {
+	background:#D5D5D5;
+	color:#1C1C1C;
+	padding:10px 5px 10px 5px;
+	border-radius:5px;
+}
+
+a {
+	text-decoration:none;
+	color:inherit;
+}
+/*login*/
+
+.workstableselection tr:first-child td {
+	background:#e0e0e0;	
+}
+
+.workstableselection td {
+	padding:15px;
+	color:#2B2B2B;
+	border-bottom:#D7D7D7 thin solid;
+}
+
+/*end login*/
+
+
+/*home*/
+
+
+#homeinformation
+{
+	width: 74%;
+	float: right;
+	text-align: left;
+}
+
+/*Detalles generales*/
+.homedetails
+{
+	border-top: 1px;
+	border-left: 0px;
+	border-right: 0px;
+	border-bottom: 1px;
+	border-color: #7D7D7D;
+	border-style: solid;
+	width: 100%;
+	float: right;
+}
+
+/*Imagen del oficio*/
+.homedetails .icon
+{
+	float: left;
+	width: 80px;
+	height: 80px;
+	margin-right:40px;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+/**/
+.homedetails h1
+{
+	float: left;
+	text-align: left;
+	margin-bottom:10px;
+	font-size:24px;
+}
+
+.homedetailsrank
+{
+	float: right;
+	height: 23px;
+	text-align: right;
+	margin-top:10px;
+}
+
+.homedetails h2
+{
+	float: left;
+	width: 74%;
+	text-align: left;
+	vertical-align: middle;
+	font-size:32px;
+	margin:0px;
+}
+
+
+
+/* end home*/
+
+/*Mi dinero*/
+
+.midinerocontainer {
+	width:74%;
+	float:right;	
+}
+
+.midinerocontainer .panel {
+	padding:15px;
+	color:#2B2B2B;
+	border-top:#D7D7D7 thin solid;
+	border-bottom:#D7D7D7 thin solid;
+	margin-bottom:50px;
+}
+
+.midinerocontainer .panel p {
+	font-size:36px;
+	text-align:right;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+/*End Mi dinero*/
+
+
+
+/*Messages*/
+
+#messagescontainer {
+	width:74%;
+	float:right;
+}
+
+.messagesinbox {
+	padding:15px;
+	color:#2B2B2B;
+	border-bottom:#D7D7D7 thin solid;
+}
+
+.notread {
+	background:#F4F4F4;
+}
+
+.messagesinbox .whitebtn {
+	float:right;
+	margin-top:30px;
+}
+
+
+
+/*End Messages*/
+
+
+/*Message*/
+
+.messagecontainer {
+	width:74%;
+	float:right;	
+}
+
+
+#messagecontainer .btn {
+	margin-top:10px;
+	margin-left:30px;
+}
+
+
+#messagecontainer .btn:hover {
+	color:#B2E28C;
+}
+
+#messagecontainer .btns {
+	margin-top:50px;
+	text-align:right;
+}
+
+
+
+/*End message*/
+
+
+
+#enviarremesacontent {
+	width:74%;
+	float:right;
+}

@@ -88,7 +88,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "register")) {
 <body>
 
 <header>
-	<div id="headercontainer"><img src="../images/Logo.png" width="150" height="150" />
+	<div id="headercontainer"><a href="http://wildgriffin.com/werkpal/"><img src="../images/Logo.png" width="150" height="150" /></a>
     <?php if (isset($_SESSION['MM_Username'])) { ?>
     <ul>
     	<li><a href="../home.php"> Inicio</a> </li>

@@ -17,11 +17,17 @@ header {
 	margin:auto;
 	margin-bottom:-40px;
 	text-align:right;
+	position:relative;
+	z-index:3;
 }
 
+#headercontainer img  {
+	z-index:3;
+}
 header ul {
 	list-style:none;
 	margin-top:-60px;
+	z-index:3;
 }
 
 header li {
@@ -144,21 +150,199 @@ select {
 .btn {
 	background:#808080;
 	color:#e0e0e0;
-	padding:10px 5px 10px 5px;
+	padding:10px 20px 10px 20px;
 	border-radius:5px;
 }
-
+ 
+.btn:hover {
+	background:#808080;
+	color:#F0592D;
+	cursor:pointer;
+}
+ 
 .whitebtn {
 	background:#D5D5D5;
 	color:#1C1C1C;
-	padding:10px 5px 10px 5px;
+	width:auto;
+	padding:10px 20px 10px 20px;
 	border-radius:5px;
 }
+
+.whitebtn:hover {
+	background:#D5D5D5;
+	color:#F0592D;
+	cursor:pointer;
+}
+
 
 a {
 	text-decoration:none;
 	color:inherit;
 }
+
+/*Index*/
+
+
+
+#indexlanding {
+	background:#284059;
+	position:absolute;
+	width:100%;
+	left:0px;
+	margin-top:-450px;
+	z-index:1;
+	height:400px;
+}
+
+#indexlanding #indexlandingcontent {
+	width:900px;
+	margin:auto;
+	position:relative;
+}
+
+#indexlanding .info {
+	float:left;
+	width:300px;	
+	margin-top:50px;
+}
+	
+
+#indexlanding #indexlandingcontent h1 {
+	color:#F0F3F7;
+	
+}
+
+#indexlanding #indexlandingcontent p {
+	color:#CCD6DF;
+}
+
+#indexlanding #indexlandingcontent iframe {
+	float:right;
+	margin-top:50px;
+}
+
+
+#indexcontainer {
+	padding:20px;
+	margin-top:450px;
+}
+
+
+#indexcontainer .logoin {
+	margin-right:20px;
+	
+}
+
+#indexcontainer h1 {
+	color:rgb(82, 186, 213);
+	font-size:24px;
+	margin-bottom:30px;
+}
+
+#indexoptionscontainer {
+	clear:both;
+	height:310px;
+	position:relative;
+	margin-top:90px;
+	margin-bottom:100px;
+}
+
+#indexoptionscontainer .iconsstart {
+	width:100px;
+	display:block;
+	margin:auto;
+	margin-bottom:30px;
+	
+}
+
+#indexoptionscontainer a {
+	float:right;
+	bottom:0px;
+	right:20px;
+	position:absolute;
+}
+
+
+#indexoptionscontainer h1 {
+	color:#2B2B2B;
+	font-size:18px;
+	margin-bottom:20px;
+
+	
+}
+
+#indexneedajob {
+	width:48%;
+	float:left;
+	padding-right:10px;
+	height:inherit;
+	border-right:#E2E3EC thin solid;
+	position:relative;
+}
+
+#indexneedsomethingdone {
+	width:48%;
+	float:right;
+	height:inherit;
+	position:relative;
+}
+
+
+/*End Index*/
+
+
+/*findaservic*/
+
+#findaservicecontainer {
+	
+}
+
+#findaservicecontainer form {
+	width:70%;
+	float:left;
+}
+
+#findaservicecontainer .imgdetail {
+	width:28%;
+	float:right;
+}
+
+
+.workerstableselection tr:first-child td {
+	background:#e0e0e0;
+	padding:15px;	
+}
+
+.workerstableselection td {
+	padding:15px;
+	padding-top:5px;
+	color:#2B2B2B;
+	border-bottom:#D7D7D7 thin solid;
+}
+
+#findaservicecontainer .findaservicedetailsrank {
+	padding:0px;
+	margin:0px;
+	width:100%;
+	margin-top:0px;
+	margin-bottom:10px;
+}
+
+#findaservicecontainer .btn {
+	margin-top:20px;
+	display:block;
+	text-align:center;
+	background:#5F9F2B;
+	color:#FFFFFF;
+}
+
+#findaservicecontainer .btn:hover {
+	color:#353535;
+}
+
+/* End findaservic*/
+
+
 /*login*/
 
 .workstableselection tr:first-child td {

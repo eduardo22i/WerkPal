@@ -4,8 +4,10 @@
 
 class user { 
 
+	public $id;
 	public $name;
 	public $lastname;
+	public $completename;
 	public $email;
 	public $password;
 	public $biography;

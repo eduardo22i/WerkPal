@@ -30,7 +30,7 @@ class controller_cityhaswork extends base  {
 			$cityhaswork->city = $city->find($querymessage['idcity']);
 			$work = new controller_work ();
 			$cityhaswork->work =  $work->find($querymessage['idwork']);
-			$this->cityhaswork->price =  $querymessage['price'];
+			$cityhaswork->price =  $querymessage['price'];
 			
 			 
 			$this->recordset[$i] = $cityhaswork;

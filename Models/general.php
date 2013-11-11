@@ -1,3 +1,5 @@
+<?php //ob_start(); ?>
+
 <?php //initialize the session
 if (!isset($_SESSION)) {
   session_start();
@@ -33,7 +35,7 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
 
 <?php
 if (!isset($_SESSION)) {
-  session_start();
+  //session_start();
 }
 $MM_authorizedUsers = "";
 $MM_donotCheckaccess = "true";

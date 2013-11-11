@@ -23,8 +23,10 @@ class controller_user extends base  {
 		//Assign the values
 		
 		$this->user = new user();
+		$this->user->id = $userdata[0]['id'];
 		$this->user->name = $userdata[0]['name'];
 		$this->user->lastname =  $userdata[0]['lastname'];
+		$this->user->completename = $this->user->name. " ". $this->user->lastname;
 		$this->user->email =  $userdata[0]['email'];
 		$this->user->password =  $userdata[0]['password'];
 		$this->user->biography =  $userdata[0]['biography'];

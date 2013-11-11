@@ -1,78 +1,12 @@
-<?php require_once('Connections/chanceamigo.php'); ?>
-
-<?php require_once('Models/general.php'); ?>
-
 <?php require('Controllers/controller_user.php'); ?>
-<?php $user = new controller_user(); ?>
-<?php $user->find($_SESSION['MM_Usernameid']);  ?>
+<?php $usercontroller = new controller_user(); ?>
+<?php $user = $usercontroller->find($_GET['iduser']);  ?>
 
 
 <?php require('Controllers/controller_message.php'); ?>
 <?php $message = new controller_message();  ?>
-<?php $message->find($_GET['id']);  ?>
+<?php //$message->find($_GET['id']);  ?>
 
-<?php
-
-$insertSQL = sprintf("UPDATE messages
-						SET isread=1
-						WHERE id=".$_GET['id']);
-mysql_select_db($database_chanceamigo, $chanceamigo);
-$Result1 = mysql_query($insertSQL, $chanceamigo) or die(mysql_error());
-	
-if (isset($_GET['accept'])) {
-	
-	$insertSQL = sprintf("UPDATE messages
-							SET isaccepted=1
-							WHERE id=".$_GET['id']);
-	mysql_select_db($database_chanceamigo, $chanceamigo);
-  	$Result1 = mysql_query($insertSQL, $chanceamigo) or die(mysql_error());
-	
-	
-	$query_messages = sprintf("SELECT m.id as id, m.idto, m.idfrom,  m.date, m.hours, m.isaccepted, w.name as workname, c.name as city, cw.price as price
-							 FROM ((messages m
-							 JOIN cityhaswork cw
-							 ON m.idcityhaswork = cw.id)
-							 JOIN works w
-							 ON cw.idwork = w.id)
-							 JOIN cities c
-							 ON cw.idcity = c.id
- 							 WHERE m.id=".$_GET['id']);
-							 
-	
-	//$query_messages = sprintf("SELECT * FROM messages WHERE id = ".$_GET['id']);
-	$messages = mysql_query($query_messages, $chanceamigo) or die(mysql_error());
-	$row_messages = mysql_fetch_assoc($messages);
-	$totalRows_messages = mysql_num_rows($messages);
-	
-	
-	
-	
-	
-	$insertSQL = sprintf("INSERT INTO transactions (id_user_to, id_user_from, type, price) VALUES 
-  											 		  (%s, %s, %s, %s)",
-						   GetSQLValueString($row_messages['idto'], "int"),
-						   GetSQLValueString($row_messages['idfrom'], "int"),
-						   GetSQLValueString("D", "text"),
-						   GetSQLValueString($row_messages['price'] * $row_messages['hours'] , "double"));						  
-	mysql_select_db($database_chanceamigo, $chanceamigo);
-  	$Result1 = mysql_query($insertSQL, $chanceamigo) or die(mysql_error());
-	
-	
-}
-
-if (isset($_GET['ignore'])) {
-	
-	$insertSQL = sprintf("UPDATE messages
-							SET isaccepted=2
-							WHERE id=".$_GET['id']);
-	mysql_select_db($database_chanceamigo, $chanceamigo);
-  	$Result1 = mysql_query($insertSQL, $chanceamigo) or die(mysql_error());
-	
-	
-}
-
-
-?>
 
 
 <!doctype html>
@@ -80,7 +14,7 @@ if (isset($_GET['ignore'])) {
 <head>
 <meta charset="UTF-8">
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Mensaje</title>
+<title>Untitled Document</title>
 <!-- InstanceEndEditable -->
 <link href="style.css" rel="stylesheet" type="text/css"  />
 
@@ -117,6 +51,11 @@ if (isset($_GET['ignore'])) {
 
 <!-- InstanceBeginEditable name="content" -->
 
+<div id="informationUser">
+        <img src="images/user_default_photo.png" >
+        <p><?php echo $user->completename ?></p>
+ </div>
+    
 <div id="messagecontainer">
 	<h1>Trabajo como <?php echo $message->message->cityhaswork->work->name; ?></h1>
     <h2>en <?php echo $message->message->cityhaswork->city->name;?></h2>
@@ -146,6 +85,8 @@ if (isset($_GET['ignore'])) {
 </div>
 
 <div class="clear"></div>
+
+
 <!-- InstanceEndEditable -->
 </div>
 

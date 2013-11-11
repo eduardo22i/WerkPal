@@ -60,40 +60,13 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 ?>
 
-<?php
 
-
-$insertSQL = sprintf("SELECT * FROM users WHERE id = ". $_SESSION['MM_Usernameid'] );
-mysql_select_db($database_chanceamigo, $chanceamigo);
-$user = mysql_query($insertSQL, $chanceamigo) or die(mysql_error());
-$row_user = mysql_fetch_assoc($user);
-$totalRows_user = mysql_num_rows($user);
-
-
-
-
-mysql_select_db($database_chanceamigo, $chanceamigo);
-$query_transactions = sprintf("SELECT price as money, type FROM transactions WHERE id_user_to = " . $_SESSION['MM_Usernameid']);
-$transactions = mysql_query($query_transactions, $chanceamigo) or die(mysql_error());
-$row_transactions = mysql_fetch_assoc($transactions);
-$totalRows_transactions = mysql_num_rows($transactions);
-
-$mymoney = 0;
-do {
-	if ($row_transactions['type'] == "D") {
-		$mymoney  =  $mymoney  + $row_transactions['money'];
-	} else if ($row_transactions['type'] == "R") {
-		$mymoney  =  $mymoney  - $row_transactions['money'];
-	}
-} while ($row_transactions = mysql_fetch_assoc($transactions));
-
-?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/maintemplate.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Untitled Document</title>
+<title>My Money</title>
 <!-- InstanceEndEditable -->
 <link href="style.css" rel="stylesheet" type="text/css"  />
 
@@ -104,7 +77,7 @@ do {
 <body>
 
 <header>
-	<div id="headercontainer"><img src="images/Logo.png" width="150" height="150" />
+	<div id="headercontainer"><a href="http://wildgriffin.com/werkpal/"><img src="images/Logo.png" width="150" height="150" /></a>
     <?php if (isset($_SESSION['MM_Username'])) { ?>
     <ul>
     	<li><a href="home.php"> Inicio</a> </li>

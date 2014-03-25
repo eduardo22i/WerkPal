@@ -1,78 +1,26 @@
-<?php require_once('Connections/chanceamigo.php'); ?>
+<?php //initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
 
+$menu = "offers";
+
+?>
+
+<?php require_once('Connections/userin.php'); ?>
 <?php require_once('Models/general.php'); ?>
 
-<?php require('Controllers/controller_user.php'); ?>
-<?php $user = new controller_user(); ?>
-<?php $user->find($_SESSION['MM_Usernameid']);  ?>
 
 
 <?php require('Controllers/controller_message.php'); ?>
-<?php $message = new controller_message();  ?>
-<?php $message->find($_GET['id']);  ?>
+<?php $controller_message = new controller_message();  ?>
+<?php $message = $controller_message->findForUser($_GET['id'], $user->id);  ?>
 
-<?php
-
-$insertSQL = sprintf("UPDATE messages
-						SET isread=1
-						WHERE id=".$_GET['id']);
-mysql_select_db($database_chanceamigo, $chanceamigo);
-$Result1 = mysql_query($insertSQL, $chanceamigo) or die(mysql_error());
-	
-if (isset($_GET['accept'])) {
-	
-	$insertSQL = sprintf("UPDATE messages
-							SET isaccepted=1
-							WHERE id=".$_GET['id']);
-	mysql_select_db($database_chanceamigo, $chanceamigo);
-  	$Result1 = mysql_query($insertSQL, $chanceamigo) or die(mysql_error());
-	
-	
-	$query_messages = sprintf("SELECT m.id as id, m.idto, m.idfrom,  m.date, m.hours, m.isaccepted, w.name as workname, c.name as city, cw.price as price
-							 FROM ((messages m
-							 JOIN cityhaswork cw
-							 ON m.idcityhaswork = cw.id)
-							 JOIN works w
-							 ON cw.idwork = w.id)
-							 JOIN cities c
-							 ON cw.idcity = c.id
- 							 WHERE m.id=".$_GET['id']);
-							 
-	
-	//$query_messages = sprintf("SELECT * FROM messages WHERE id = ".$_GET['id']);
-	$messages = mysql_query($query_messages, $chanceamigo) or die(mysql_error());
-	$row_messages = mysql_fetch_assoc($messages);
-	$totalRows_messages = mysql_num_rows($messages);
-	
-	
-	
-	
-	
-	$insertSQL = sprintf("INSERT INTO transactions (id_user_to, id_user_from, type, price) VALUES 
-  											 		  (%s, %s, %s, %s)",
-						   GetSQLValueString($row_messages['idto'], "int"),
-						   GetSQLValueString($row_messages['idfrom'], "int"),
-						   GetSQLValueString("D", "text"),
-						   GetSQLValueString($row_messages['price'] * $row_messages['hours'] , "double"));						  
-	mysql_select_db($database_chanceamigo, $chanceamigo);
-  	$Result1 = mysql_query($insertSQL, $chanceamigo) or die(mysql_error());
-	
-	
-}
-
-if (isset($_GET['ignore'])) {
-	
-	$insertSQL = sprintf("UPDATE messages
-							SET isaccepted=2
-							WHERE id=".$_GET['id']);
-	mysql_select_db($database_chanceamigo, $chanceamigo);
-  	$Result1 = mysql_query($insertSQL, $chanceamigo) or die(mysql_error());
-	
-	
-}
+<?php $controller_message->updateMessageViewFromUser($_GET['id'], $user->id);  ?>
 
 
-?>
+<?php require_once('Connections/acceptwork.php'); ?>
+
 
 
 <!doctype html>
@@ -91,19 +39,28 @@ if (isset($_GET['ignore'])) {
 <body>
 
 <header>
-	<div id="headercontainer"><a href="http://wildgriffin.com/werkpal/"><img src="images/Logo.png" width="150" height="150" /></a>
-    <?php if (isset($_SESSION['MM_Username'])) { ?>
-    <ul>
-    	<li><a href="home.php"> Inicio</a> </li>
-    	<li><a href="midinero.php"> Mi Dinero</a> </li>
-       <li><a href="enviarremesa.php">Enviar Remesa</a></li>
-       <li><a href="messages.php">Mensajes</a></li>
-    </ul>
-    <?php } ?>
+	<div id="headercontainer">
+    	<a href="http://werkpal.com/"><img src="images/toplogo.svg" width="185" height="30" /></a>
+    	<?php if (isset($_SESSION['MM_Username'])) { ?>
+    	<ul>
+       		<li><a href="home.php"> Inicio</a> </li>
+	    	<li><a href="money.php"> Dinero</a> </li>
+	       <li><a href="messages.php">Mensajes</a></li>
+           <li><a href="profile.php"> Perfil</a> </li>
+           <li><a href="login.php?doLogout=true"> Salir</a> </li>
+
+    	</ul>
+	    <?php } ?>
+        <div class="clear"></div>
     </div>
 </header>
 
 <div id="content">
+	<!-- InstanceBeginEditable name="showuserinfo" -->
+		<?php echo $userinfo; ?>
+
+	<!-- InstanceEndEditable -->
+	<!--
 	<?php if (isset($_SESSION['MM_Username'])) { ?>
     
     <div id="informationUser">
@@ -114,32 +71,41 @@ if (isset($_GET['ignore'])) {
     </div>
     
     <?php } ?>
-
+    -->
+    
 <!-- InstanceBeginEditable name="content" -->
 
 <div id="messagecontainer">
-	<h1>Trabajo como <?php echo $message->message->cityhaswork->work->name; ?></h1>
-    <h2>en <?php echo $message->message->cityhaswork->city->name;?></h2>
+	<?php  if (!($message) == "") { ?> 
+	<h1>Trabajo como <?php echo $message->cityhaswork->work->name; ?></h1>
+    <h2>en <?php echo $message->cityhaswork->city->name;?></h2>
     
-    <p><strong>Precio: </strong> $ <?php echo $message->message->cityhaswork->price;?></p>
-    <p><strong>Día: </strong><?php echo $message->message->date; ?></p>
-    <p><strong>Horas: </strong><?php echo $message->message->hours; ?></p>
-    <p><strong>Mensaje: </strong><?php echo $message->message->message;?></p>
+    <p><strong>Precio: </strong> $ <?php echo $message->cityhaswork->price;?></p>
+    <p><strong>Día: </strong><?php echo $message->date; ?></p>
+    <p><strong>Horas: </strong><?php echo $message->hours; ?></p>
+    <p><strong>Mensaje: </strong><?php echo $message->message;?></p>
     
     <div>
     <div id="map-canvas"></div>
-    <img src="http://maps.googleapis.com/maps/api/staticmap?center=<?php echo $message->message->latitude; ?>,<?php echo $message->message->longitude; ?>&zoom=13&size=600x300&maptype=roadmap
-&markers=color:blue%7Clabel:S%7C<?php echo $message->message->latitude; ?>,<?php echo $message->message->longitude; ?>&markers=color:green%7Clabel:G%7C40.711614,-74.012318&sensor=true" />
+    <img src="http://maps.googleapis.com/maps/api/staticmap?center=<?php echo $message->latitude; ?>,<?php echo $message->longitude; ?>&zoom=16&size=600x300&maptype=roadmap
+&markers=color:blue%7Clabel:S%7C<?php echo $message->latitude; ?>,<?php echo $message->longitude; ?>&markers=color:green%7Clabel:G%7C40.711614,-74.012318&sensor=true" />
     </div>
     
     <div class="btns">
-    <?php if ( $message->message->isaccepted ==0) { ?>
+    <?php if ( $message->isaccepted ==0) { ?>
     		<a href="message.php?accept=true&id=<?php echo $_GET['id']; ?>" class="btn">Aceptar</a>
     		<a href="message.php?ignore=true&id=<?php echo $_GET['id']; ?>" class="btn">Ignorar</a>
-    <?php } else  if ( $message->message->isaccepted ==1) { ?>
+    <?php } else  if ( $message->isaccepted ==1) { ?>
         <a href="message.php?id=<?php echo $_GET['id']; ?>" class="btn">Aceptado</a>
-    <?php } else  if ( $message->message->isaccepted ==2) { ?>
+    <?php } else  if ( $message->isaccepted ==2) { ?>
         <a href="message.php?id=<?php echo $_GET['id']; ?>" class="btn">Rechazado</a>
+     <?php } ?>
+     <?php } else {   ?>
+     <h1>Oups....</h1>
+     <p>No tienes permiso, para mirar este enlace. </p>
+     <img src="images/boy/sad.svg" />
+	 <script>window.location = 'messages.php'; </script>
+	 
      <?php } ?>
     <div class="clear"></div>
    </div>
@@ -150,7 +116,8 @@ if (isset($_GET['ignore'])) {
 </div>
 
 <footer>
-PalChance
+<img src="images/werkpalLogo.svg" width="92" />
+Werkpal, Tegucigalpa 2014
 </footer>
 
 </body>

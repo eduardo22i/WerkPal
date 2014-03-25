@@ -30,8 +30,8 @@ class controller_user extends base  {
 		$this->user->email =  $userdata[0]['email'];
 		$this->user->password =  $userdata[0]['password'];
 		$this->user->biography =  $userdata[0]['biography'];
-		$this->user->city =  new controller_city();
-		$this->user->city->find($userdata[0]['idcity']);
+		$controller_city =  new controller_city();
+		$this->user->city = $controller_city ->find($userdata[0]['idcity']);
 		$this->user->type =  $userdata[0]['type'];
 		$this->user->photo =  $userdata[0]['photo'];
 		

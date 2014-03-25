@@ -1,4 +1,144 @@
+<?php //initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+?>
+
 <?php require_once('Connections/chanceamigo.php'); ?>
+
+
+<?php
+
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+
+
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+?>
+
+<?php 
+
+$showlogin = true;
+
+$loginFormAction = $_SERVER['PHP_SELF'];
+if (isset($_GET['accesscheck'])) {
+  $_SESSION['PrevUrl'] = $_GET['accesscheck'];
+}
+
+if (isset($_POST['user']) && isset($_POST['login'])) {
+	
+  $loginUsername=$_POST['user'];
+  $password=$_POST['password'];
+  $MM_fldUserAuthorization = "";
+  $MM_redirectLoginSuccess = "home.php";
+  $MM_redirectLoginFailed = "malo.php";
+  $MM_redirecttoReferrer = false;
+  mysql_select_db($database_chanceamigo, $chanceamigo);
+   
+  $LoginRS__query=sprintf("SELECT * FROM users WHERE user=%s AND password=%s",
+    GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
+  $LoginRS = mysql_query($LoginRS__query, $chanceamigo) or die(mysql_error());
+  $loginFoundUser = mysql_num_rows($LoginRS);
+  
+  if ($loginFoundUser) {
+     $loginStrGroup = "";
+    
+	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
+    //declare two session variables and assign them
+    $_SESSION['MM_Username'] = $loginUsername;
+    $_SESSION['MM_UserGroup'] = $loginStrGroup;
+	
+	//User information
+	$row_users = mysql_fetch_assoc($LoginRS);	
+	$_SESSION['MM_Usernameid'] = $row_users['id'];
+	
+	$welcome = true;
+	
+	/*
+    if (isset($_SESSION['PrevUrl']) && false) {
+      $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
+    }
+	
+
+    header("Location: " . $MM_redirectLoginSuccess );
+	*/
+	if (isset($_POST['required']) && $_POST['required'] == "true" ) {
+		 echo "<script>document.location.href = 'sendmessage.php?iduser=".$_POST['iduser']."&idcityhaswork=".$_POST['idcityhaswork']."';</script>";
+	}
+	
+  } else {
+	 $showlogin = false;
+    header("Location: ". $MM_redirectLoginFailed );
+  }
+}
+
+?>
+
+
+
+
+<?php 
+// *** Redirect if username exists
+$MM_flag="MM_insert";
+if (isset($_POST[$MM_flag])) {
+  $MM_dupKeyRedirect="yaexiste.php";
+  $loginUsername = $_POST['user'];
+  $LoginRS__query = sprintf("SELECT user FROM users WHERE user=%s", GetSQLValueString($loginUsername, "text"));
+  mysql_select_db($database_chanceamigo, $chanceamigo);
+  $LoginRS=mysql_query($LoginRS__query, $chanceamigo) or die(mysql_error());
+  $loginFoundUser = mysql_num_rows($LoginRS);
+  
+  //if there is a row in the database, the username was found - can not add the requested username
+  if($loginFoundUser){
+	  
+	  
+	
+	$MM_qsChar = "?";
+    //append the username to the redirect page
+    if (substr_count($MM_dupKeyRedirect,"?") >=1) $MM_qsChar = "&";
+    $MM_dupKeyRedirect = $MM_dupKeyRedirect . $MM_qsChar ."requsername=".$loginUsername;
+    header ("Location: $MM_dupKeyRedirect");
+    exit;
+  }
+}
+
+
+?>
+
+
+
 <?php //initialize the session
 if (!isset($_SESSION)) {
   session_start();
@@ -72,89 +212,8 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 }
 ?>
 
-<?php
-if (!function_exists("GetSQLValueString")) {
-function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
-{
-  if (PHP_VERSION < 6) {
-    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
-  }
 
-  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
 
-  switch ($theType) {
-    case "text":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;    
-    case "long":
-    case "int":
-      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
-      break;
-    case "double":
-      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
-      break;
-    case "date":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;
-    case "defined":
-      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
-      break;
-  }
-  return $theValue;
-}
-}
-?>
-
-<?php 
-
-$showlogin = true;
-
-$loginFormAction = $_SERVER['PHP_SELF'];
-if (isset($_GET['accesscheck'])) {
-  $_SESSION['PrevUrl'] = $_GET['accesscheck'];
-}
-
-if (isset($_POST['user']) && isset($_POST['login'])) {
-  $loginUsername=$_POST['user'];
-  $password=$_POST['password'];
-  $MM_fldUserAuthorization = "";
-  $MM_redirectLoginSuccess = "home.php";
-  $MM_redirectLoginFailed = "malo.php";
-  $MM_redirecttoReferrer = false;
-  mysql_select_db($database_chanceamigo, $chanceamigo);
-   
-  $LoginRS__query=sprintf("SELECT * FROM users WHERE user=%s AND password=%s",
-    GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
-  
-  $LoginRS = mysql_query($LoginRS__query, $chanceamigo) or die(mysql_error());
-  $loginFoundUser = mysql_num_rows($LoginRS);
-  if ($loginFoundUser) {
-     $loginStrGroup = "";
-    
-	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
-    //declare two session variables and assign them
-    $_SESSION['MM_Username'] = $loginUsername;
-    $_SESSION['MM_UserGroup'] = $loginStrGroup;
-	
-	//User information
-	$row_users = mysql_fetch_assoc($LoginRS);	
-	$_SESSION['MM_Usernameid'] = $row_users['id'];
-	
-	$welcome = true;
-	
-    if (isset($_SESSION['PrevUrl']) && false) {
-      $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
-    }
-    header("Location: " . $MM_redirectLoginSuccess );
-	
-	
-  } else {
-	 $showlogin = false;
-    header("Location: ". $MM_redirectLoginFailed );
-  }
-}
-
-?>
 
 
 
@@ -174,37 +233,7 @@ $row_cities = mysql_fetch_assoc($cities);
 $totalRows_cities = mysql_num_rows($cities);
 
 ?>
-
-<?php 
-// *** Redirect if username exists
-$MM_flag="MM_insert";
-if (isset($_POST[$MM_flag])) {
-  $MM_dupKeyRedirect="yaexiste.php";
-  $loginUsername = $_POST['user'];
-  $LoginRS__query = sprintf("SELECT user FROM users WHERE user=%s", GetSQLValueString($loginUsername, "text"));
-  mysql_select_db($database_chanceamigo, $chanceamigo);
-  $LoginRS=mysql_query($LoginRS__query, $chanceamigo) or die(mysql_error());
-  $loginFoundUser = mysql_num_rows($LoginRS);
-  
-  //if there is a row in the database, the username was found - can not add the requested username
-  if($loginFoundUser){
-	  
-	  
-	
-	$MM_qsChar = "?";
-    //append the username to the redirect page
-    if (substr_count($MM_dupKeyRedirect,"?") >=1) $MM_qsChar = "&";
-    $MM_dupKeyRedirect = $MM_dupKeyRedirect . $MM_qsChar ."requsername=".$loginUsername;
-    header ("Location: $MM_dupKeyRedirect");
-    exit;
-  }
-}
-
-$editFormAction = $_SERVER['PHP_SELF'];
-if (isset($_SERVER['QUERY_STRING'])) {
-  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
-}
-
+<?php
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "newuser")) {
   $insertSQL = sprintf("INSERT INTO users (name, lastname, email, user, password, idcity, photo) VALUES 
   											 (%s, %s, %s, %s, %s, %s, %s)",
@@ -236,7 +265,9 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "newuser")) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
   }
-  header(sprintf("Location: %s", $insertGoTo));
+  
+  echo "<script>window.location = 'login.php?status=newuser'; </script>";
+  //header(sprintf("Location: %s", $insertGoTo));
 }
 
 ?>
@@ -285,19 +316,27 @@ xmlhttp.send();
 <body>
 
 <header>
-	<div id="headercontainer"><a href="http://wildgriffin.com/werkpal/"><img src="images/Logo.png" width="150" height="150" /></a>
-    <?php if (isset($_SESSION['MM_Username'])) { ?>
-    <ul>
-    	<li><a href="home.php"> Inicio</a> </li>
-    	<li><a href="midinero.php"> Mi Dinero</a> </li>
-       <li><a href="enviarremesa.php">Enviar Remesa</a></li>
-       <li><a href="messages.php">Mensajes</a></li>
-    </ul>
-    <?php } ?>
+	<div id="headercontainer">
+    	<a href="http://werkpal.com/"><img src="images/toplogo.svg" width="185" height="30" /></a>
+    	<?php if (isset($_SESSION['MM_Username'])) { ?>
+    	<ul>
+       		<li><a href="home.php"> Inicio</a> </li>
+	    	<li><a href="money.php"> Dinero</a> </li>
+	       <li><a href="messages.php">Mensajes</a></li>
+           <li><a href="profile.php"> Perfil</a> </li>
+           <li><a href="login.php?doLogout=true"> Salir</a> </li>
+
+    	</ul>
+	    <?php } ?>
+        <div class="clear"></div>
     </div>
 </header>
 
 <div id="content">
+	<!-- InstanceBeginEditable name="showuserinfo" -->
+	
+	<!-- InstanceEndEditable -->
+	<!--
 	<?php if (isset($_SESSION['MM_Username'])) { ?>
     
     <div id="informationUser">
@@ -308,7 +347,8 @@ xmlhttp.send();
     </div>
     
     <?php } ?>
-
+    -->
+    
 <!-- InstanceBeginEditable name="content" -->
 
 <?php if ($welcome == false) { ?>
@@ -358,6 +398,14 @@ xmlhttp.send();
   <?php } ?>
   <input type="text" name="user"  placeholder="Usuario"/>
   <input type="password" name="password"  placeholder="Contraseña" />
+  
+  <?php
+  if (isset($_GET['required']) && $_GET['required'] == "true" ) { ?>
+          <input type="hidden" name="required" value="true" />
+          <input type="hidden" name="iduser" value="<?php echo $_GET['iduser'];?>" />
+          <input type="hidden" name="idcityhaswork" value="<?php echo $_GET['idcityhaswork']; ?>" />
+  <?php } ?>
+  
   <input type="submit" value="Seleccionar" />
   <input type="hidden" name="login" value="true" />
   </form>
@@ -372,7 +420,8 @@ xmlhttp.send();
 </div>
 
 <footer>
-PalChance
+<img src="images/werkpalLogo.svg" width="92" />
+Werkpal, Tegucigalpa 2014
 </footer>
 
 </body>

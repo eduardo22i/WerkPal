@@ -27,22 +27,31 @@ class base {
    public function connectoDB() {
 	   
 
-	   /*
+	  
 	    $this->hostname_chanceamigo = "68.178.138.182";
 		$this->database_chanceamigo = "palenterprises";
 		$this->username_chanceamigo = "palenterprises";
 		$this->password_chanceamigo = "unPato1!";
 		
-		*/
+		 /*
 		$this->hostname_chanceamigo = "localhost";
 		$this->database_chanceamigo = "Hack";
 		$this->username_chanceamigo = "root";
 		$this->password_chanceamigo = "root";
-		
+		*/
 		$this->chanceamigo = mysql_pconnect($this->hostname_chanceamigo, $this->username_chanceamigo, $this->password_chanceamigo) or trigger_error(mysql_error(),E_USER_ERROR);  
    }
    
    
+   public function querysDB($query) {
+	   mysql_select_db($this->database_chanceamigo, $this->chanceamigo);
+	   $query_query = sprintf($query);
+		
+					 
+		$Result1 = mysql_query($query_query, $this->chanceamigo) or die(mysql_error());
+		return $Result1;
+		
+   }
    
    public function selectquerysDB($query) {
 		mysql_select_db($this->database_chanceamigo, $this->chanceamigo);

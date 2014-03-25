@@ -4,6 +4,7 @@
 
 class userhasworks { 
 
+	public $id;
 	public $user;
 	public $cityhaswork;
 	public $active;

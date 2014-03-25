@@ -1,11 +1,13 @@
-<?php require_once('Models/general.php'); ?>
-<?php require_once('Controllers/controller_userhasworks.php'); ?>
-<?php $obj = new controller_userhasworks(); ?>
-<?php $obj->findAll($_SESSION['MM_Usernameid']); ?>
+<?php //initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+?>
+<?php require_once('Connections/userin.php'); ?>
 
-<?php require_once('Controllers/controller_user.php'); ?>
-<?php $user = new controller_user(); ?>
-<?php $user->find($_SESSION['MM_Usernameid']); ?>
+<?php require_once('Models/general.php'); ?>
+
+
 
 
 
@@ -25,19 +27,27 @@
 <body>
 
 <header>
-	<div id="headercontainer"><a href="http://wildgriffin.com/werkpal/"><img src="images/Logo.png" width="150" height="150" /></a>
-    <?php if (isset($_SESSION['MM_Username'])) { ?>
-    <ul>
-    	<li><a href="home.php"> Inicio</a> </li>
-    	<li><a href="midinero.php"> Mi Dinero</a> </li>
-       <li><a href="enviarremesa.php">Enviar Remesa</a></li>
-       <li><a href="messages.php">Mensajes</a></li>
-    </ul>
-    <?php } ?>
+	<div id="headercontainer">
+    	<a href="http://werkpal.com/"><img src="images/toplogo.svg" width="185" height="30" /></a>
+    	<?php if (isset($_SESSION['MM_Username'])) { ?>
+    	<ul>
+       		<li><a href="home.php"> Inicio</a> </li>
+	    	<li><a href="money.php"> Dinero</a> </li>
+	       <li><a href="messages.php">Mensajes</a></li>
+           <li><a href="profile.php"> Perfil</a> </li>
+           <li><a href="login.php?doLogout=true"> Salir</a> </li>
+
+    	</ul>
+	    <?php } ?>
+        <div class="clear"></div>
     </div>
 </header>
 
 <div id="content">
+	<!-- InstanceBeginEditable name="showuserinfo" -->
+	<?php echo $userinfo; ?>
+	<!-- InstanceEndEditable -->
+	<!--
 	<?php if (isset($_SESSION['MM_Username'])) { ?>
     
     <div id="informationUser">
@@ -48,38 +58,16 @@
     </div>
     
     <?php } ?>
-
+    -->
+    
 <!-- InstanceBeginEditable name="content" -->
 
 <div id="homeinformation">
-	<h1><?php echo  $user->user->name; ?> <?php print $user->user->lastname; ?></h1>
-    <h2><?php echo  $user->user->city->city->name; ?></h2>
-	<p> <?php echo  $user->user->biography; ?></p>
-
-
-    <!-- Información del usuario, width 74%, float right, border solid, border top y bottom 1px: -->
-    <?php foreach ($obj->recordset as $userhaswork) { ?>
-    <div class="homedetails">
+	
+	<h1>Actividad</h1>    
     
-        <!-- Imagen de role: -->
-        <img src="<?php echo $userhaswork->cityhaswork->work->badgePhoto; ?>" class="icon" />
-    
-        <!-- Detalles de  -->
-        <h1><?php echo $userhaswork->cityhaswork->work->name; ?></h1>
-    
-        <div class="homedetailsrank">
-           <img src="images/star.png" width="23" height="23" />
-           <img src="images/star.png" width="23" height="23" />
-           <img src="images/star.png" width="23" height="23" />
-           <img src="images/star.png" width="23" height="23" />
-           <img src="images/star.png" width="23" height="23" />
-        </div>
-    
-        <h2>$ <?php  printf("%1\$.2f", $userhaswork->cityhaswork->price); ?> por Hora</h2>
-    </div>
-    
-    <?php }  ?>
-
+    <?php errorAlert(); ?>
+   
 </div>
 <div class="clear"></div>
 
@@ -87,7 +75,8 @@
 </div>
 
 <footer>
-PalChance
+<img src="images/werkpalLogo.svg" width="92" />
+Werkpal, Tegucigalpa 2014
 </footer>
 
 </body>

@@ -14,19 +14,27 @@
 <body>
 
 <header>
-	<div id="headercontainer"><a href="http://wildgriffin.com/werkpal/"><img src="../images/Logo.png" width="150" height="150" /></a>
-    <?php if (isset($_SESSION['MM_Username'])) { ?>
-    <ul>
-    	<li><a href="../home.php"> Inicio</a> </li>
-    	<li><a href="../midinero.php"> Mi Dinero</a> </li>
-       <li><a href="../enviarremesa.php">Enviar Remesa</a></li>
-       <li><a href="../messages.php">Mensajes</a></li>
-    </ul>
-    <?php } ?>
+	<div id="headercontainer">
+    	<a href="http://werkpal.com/"><img src="../images/toplogo.svg" width="185" height="30" /></a>
+    	<?php if (isset($_SESSION['MM_Username'])) { ?>
+    	<ul>
+       		<li><a href="../home.php"> Inicio</a> </li>
+	    	<li><a href="../money.php"> Dinero</a> </li>
+	       <li><a href="../messages.php">Mensajes</a></li>
+           <li><a href="../profile.php"> Perfil</a> </li>
+           <li><a href="../login.php?doLogout=true"> Salir</a> </li>
+
+    	</ul>
+	    <?php } ?>
+        <div class="clear"></div>
     </div>
 </header>
 
 <div id="content">
+	<!-- TemplateBeginEditable name="showuserinfo" -->
+	
+	<!-- TemplateEndEditable -->
+	<!--
 	<?php if (isset($_SESSION['MM_Username'])) { ?>
     
     <div id="informationUser">
@@ -37,14 +45,16 @@
     </div>
     
     <?php } ?>
-
+    -->
+    
 <!-- TemplateBeginEditable name="content" -->
 
 <!-- TemplateEndEditable -->
 </div>
 
 <footer>
-PalChance
+<img src="../images/werkpalLogo.svg" width="92" />
+Werkpal, Tegucigalpa 2014
 </footer>
 
 </body>

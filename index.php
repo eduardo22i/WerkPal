@@ -1,9 +1,19 @@
+<?php //initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+$userstay = true;
+?>
+<?php require_once('Connections/userin.php'); ?>
+<?php require_once('Models/general.php'); ?>
+
+
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/maintemplate.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>PalEnterprises</title>
+<title>Werkpal</title>
 <!-- InstanceEndEditable -->
 <link href="style.css" rel="stylesheet" type="text/css"  />
 
@@ -14,19 +24,27 @@
 <body>
 
 <header>
-	<div id="headercontainer"><a href="http://wildgriffin.com/werkpal/"><img src="images/Logo.png" width="150" height="150" /></a>
-    <?php if (isset($_SESSION['MM_Username'])) { ?>
-    <ul>
-    	<li><a href="home.php"> Inicio</a> </li>
-    	<li><a href="midinero.php"> Mi Dinero</a> </li>
-       <li><a href="enviarremesa.php">Enviar Remesa</a></li>
-       <li><a href="messages.php">Mensajes</a></li>
-    </ul>
-    <?php } ?>
+	<div id="headercontainer">
+    	<a href="http://werkpal.com/"><img src="images/toplogo.svg" width="185" height="30" /></a>
+    	<?php if (isset($_SESSION['MM_Username'])) { ?>
+    	<ul>
+       		<li><a href="home.php"> Inicio</a> </li>
+	    	<li><a href="money.php"> Dinero</a> </li>
+	       <li><a href="messages.php">Mensajes</a></li>
+           <li><a href="profile.php"> Perfil</a> </li>
+           <li><a href="login.php?doLogout=true"> Salir</a> </li>
+
+    	</ul>
+	    <?php } ?>
+        <div class="clear"></div>
     </div>
 </header>
 
 <div id="content">
+	<!-- InstanceBeginEditable name="showuserinfo" -->
+	
+	<!-- InstanceEndEditable -->
+	<!--
 	<?php if (isset($_SESSION['MM_Username'])) { ?>
     
     <div id="informationUser">
@@ -37,41 +55,32 @@
     </div>
     
     <?php } ?>
-
+    -->
+    
 <!-- InstanceBeginEditable name="content" -->
 <div id="indexlanding">
-	<div id="indexlandingcontent" >
-    	<div class="info">
-    	<h1>Helping People Help People</h1>
-        <p>La idea consiste en crear una plataforma digital que lo ayude a generar y administrar su dinero de forma fácil y seguir.</p>
-        
-        </div>
-        <iframe width="560" height="315" src="//www.youtube.com/embed/VsABOksxEYg" frameborder="0" allowfullscreen></iframe>
-    </div>
+	<h1>¿Que Buscas?</h1>
 </div>
 
 <div id="indexcontainer" >
 
 
 
-<h1>Elige una Opción / Choose an Option</h1>
-
 <div id="indexoptionscontainer" >
     
-    <div id="indexneedajob">
-    	 <img src="images/logo_werkpal.png" width="100" class="iconsstart"/>
-        <h1>¿Buscas Empleo?</h1>
+    <div id="indexneedajob" class="box">
+    	 <img src="images/boy/searching.svg" class="iconsstart"/>
+        <h1>Trabajo</h1>
         <p>Seguramente tenemos empleos 
     temporales para tus habilidades.</p>
-        <p>Registrate y empieza a trabajar.</p>
-        <a href="login.php" class="whitebtn">Iniciar</a>
+        <a href="login.php" class="whitebtn">Ver Mas</a>
     </div>
     
-    <div id="indexneedsomethingdone"> 
-         <img src="images/logo_monypal.png" width="100" class="iconsstart"/>
-        <h1>Need something done?</h1>
+    <div id="indexneedsomethingdone"  class="box"> 
+        <img src="images/boy/hire.svg" class="iconsstart"/>
+        <h1>Contratar</h1>
         <p>Discover our big selection of accesible manpower near you.</p>
-        <a href="findaservice.php" class="whitebtn">Start</a>
+        <a href="findaservice.php" class="whitebtn">Ver Mas</a>
     </div>
     
     <div class="clear"></div>
@@ -79,7 +88,7 @@
     
 </div>
 
-<h1>¿Porqué PalEnterprises?</h1>
+<h1>Acerca</h1>
 
 
 <p>Nuestra propuesta es una solución integrada a los diferentes problemas que padecen los inmigrantes ilegales en su lucha por una vida mejor. La idea consiste en crear una plataforma digital que lo ayude a generar y administrar su dinero de forma fácil y segura. El inmigrante o creemos mejor llamarlo Pal, nuestro Pal llegará a Estados Unidos o cualquier país de oportunidad en busca de empleo, nosotros en medio de distintos touch-points le invitaremos a crear un perfil con sus habilidades y éstas ingresarán a una base de datos donde podrán ser seleccionados por empleadores.</p>
@@ -91,7 +100,8 @@
 </div>
 
 <footer>
-PalChance
+<img src="images/werkpalLogo.svg" width="92" />
+Werkpal, Tegucigalpa 2014
 </footer>
 
 </body>
